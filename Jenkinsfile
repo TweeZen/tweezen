@@ -1,10 +1,9 @@
 pipeline {
-    agent{label 'master'}
+    agent any
     stages {
         stage('build') { 
             steps {
                 echo "Hello World!"
-                sh 'mvn --version'
             }
         }
     }
