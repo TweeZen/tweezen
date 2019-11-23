@@ -1,15 +1,13 @@
-#
-# Build stage
-#
-FROM maven:3.6.0-jdk-11-slim AS build
-COPY retwisj /home/app
-COPY pom.xml /home/app
-RUN mvn -f /home/app/pom.xml clean package
+FROM maven:3.5.2-jdk-8-alpine AS MAVEN_TOOL_CHAIN
+COPY pom.xml /tmp/
+COPY retwisj /tmp/retwisj/
+WORKDIR /tmp/
+RUN mvn package
 
-#
-# Package stage
-#
-FROM openjdk:11-jre-slim
-COPY --from=build /home/app/target/retwisj-0.1-SNAPSHOT.war /usr/local/lib/demo.war
+FROM tomcat:9.0-jre8-alpine
+COPY --from=MAVEN_TOOL_CHAIN /tmp/target/retwisj-0.1-SNAPSHOT.war $CATALINA_HOME/webapps/retwisj.war
+COPY --from=MAVEN_TOOL_CHAIN /tmp/retwisj/src/main/resources/log4j.properties $CATALINA_HOME/webapps/retwisj/WEB-INF/classes/
+
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/usr/local/lib/demo.war"]
+
+CMD ["catalina.sh", "run"]
