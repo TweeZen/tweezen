@@ -8,6 +8,7 @@ pipeline {
         stage ('Checking Tools') {
             steps {
                 sh '''
+                echo 'user in use:' $USER
                 java -version
                 mvn --version
                 docker version
