@@ -155,21 +155,12 @@
   </dependencies>
 
   <build>
-    <resources>
-        <resource>
-            <directory>retwisj/src/main/resources</directory>
-            <targetPath>${project.build.directory}</targetPath>
-            <includes>
-                <include>log4j.properties</include>
-            </includes>
-        </resource>
-    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <webXml>retwisj\src\main\webapp\WEB-INF\web.xml</webXml>
+          <webXml>src\main\webapp\WEB-INF\web.xml</webXml>
         </configuration>
         <version>3.2.3</version>
       </plugin>
