@@ -18,7 +18,7 @@ pipeline {
         stage('Build') { 
             steps {
                 echo "Hello World!"
-                // Added this line to test auto-build
+                echo "Added this line to test auto-build"
             }
         }
     }
