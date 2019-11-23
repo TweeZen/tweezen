@@ -38,7 +38,13 @@ pipeline {
     }
     post {
         always {
-            slackSend message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+            slackSend color: 'good', message: "Build Started - ${env.JOB_NAME} (<${env.BUILD_URL}|#${env.BUILD_NUMBER}>)"
+        }
+        success {
+            slackSend color: 'good', message: "Build finished with success!"
+        }
+        failure {
+            slackSend color: '#ff0000, message: "Build failed - (<${env.BUILD_URL}|view log>)"
         }
     }
 }
