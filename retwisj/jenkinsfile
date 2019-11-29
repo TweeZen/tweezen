@@ -17,7 +17,7 @@ pipeline {
         }
         stage('Preparation') {
             steps {
-                git 'https://github.com/TweeZen/tweezen.git'
+                git 'https://github.com/TweeZen/tweezen'
             }
         }
         stage('Build') {
@@ -38,11 +38,13 @@ pipeline {
         }
         stage('Docker') {
             steps {
-                sh '''
-                    docker build -t retwisj:pipeline .
-                    docker tag retwisj:pipeline eu.gcr.io/robust-zenith-161810/retwisj:pipeline
-                    docker push eu.gcr.io/robust-zenith-161810/retwisj:pipeline
-                '''
+                dir("retwisj"){
+                    sh '''
+                        docker build -t retwisj:pipeline .
+                        docker tag retwisj:pipeline eu.gcr.io/robust-zenith-161810/retwisj:pipeline
+                        docker push eu.gcr.io/robust-zenith-161810/retwisj:pipeline
+                    '''
+                }
             }
         }
         // stage('Results') {
