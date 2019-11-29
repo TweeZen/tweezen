@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+    tools {
+        maven 'Maven 3.6.2'
+        jdk 'jdk8'
+    }
+    stages {
+        stage ('Checking Tools') {
+            steps {
+                sh '''
+                    echo 'user in use:' $USER
+                    docker version
+                '''
+            }
+        }
+        stage('Google Configuration') {
+            steps {
+                sh '''
+                    gcloud auth activate-service-account 592775981948-compute@developer.gserviceaccount.com --key-file=/opt/bitnami/k8s-credentials.json
+                    gcloud config set project robust-zenith-161810
+                    gcloud config set compute/zone europe-west1-b
+                    gcloud container clusters get-credentials cluster-cicd
+                '''
+            }
+        }
+        stage('Deployment') {
+            steps {
+                dir("deployment") {
+                    sh '''
+                        kubectl apply -f deployment_redis.yaml
+                        kubectl apply -f deployment_app.yaml
+                    '''
+                }
+            }
+        }
+    }
+}

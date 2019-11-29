@@ -35,9 +35,9 @@ pipeline {
             steps {
                 dir("retwisj"){
                     sh '''
-                        docker build -t retwisj:pipeline .
-                        docker tag retwisj:pipeline eu.gcr.io/robust-zenith-161810/retwisj:pipeline
-                        docker push eu.gcr.io/robust-zenith-161810/retwisj:pipeline
+                        docker build -t tweezen .
+                        docker tag tweezen eu.gcr.io/robust-zenith-161810/tweezen
+                        docker push eu.gcr.io/robust-zenith-161810/tweezen
                     '''
                 }
             }
