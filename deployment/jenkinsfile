@@ -13,12 +13,13 @@ pipeline {
                 '''
             }
         }
-        stage('Google Authentification') {
+        stage('Google Configuration') {
             steps {
                 sh '''
                     gcloud auth activate-service-account 592775981948-compute@developer.gserviceaccount.com --key-file=/opt/bitnami/k8s-credentials.json
-                    gcloud auth configure-docker --quiet
-                    gcloud auth list
+                    gcloud config set project robust-zenith-161810
+                    gcloud config set compute/zone europe-west1-b
+                    gcloud container clusters get-credentials cluster-cicd
                 '''
             }
         }
