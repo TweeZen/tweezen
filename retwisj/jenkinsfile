@@ -8,17 +8,17 @@ pipeline {
         stage ('Checking Tools') {
             steps {
                 sh '''
-                echo 'user in use:' $USER
-                java -version
-                mvn --version
-                docker version
+                    echo 'user in use:' $USER
+                    java -version
+                    mvn --version
+                    docker version
                 '''
             }
         }
         stage('Preparation') {
             steps {
                 sh'''
-                    git clone https://github.com/TweeZen/tweezen.git
+                    // git clone https://github.com/TweeZen/tweezen.git
                     pwd
                     ls -al
                 '''
