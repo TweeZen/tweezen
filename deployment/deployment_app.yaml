@@ -55,7 +55,7 @@ spec:
         app: app
     spec:
       containers:
-      - image: eu.gcr.io/robust-zenith-161810/tweezen
+      - image: eu.gcr.io/robust-zenith-161810/tweezen:1.0
         imagePullPolicy: Always
         name: tweezen-sha256
         resources: {}
