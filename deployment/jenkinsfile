@@ -9,17 +9,8 @@ pipeline {
             steps {
                 sh '''
                     echo 'user in use:' $USER
-                    java -version
-                    mvn --version
                     docker version
                 '''
-            }
-        }
-        stage('Build') {
-            steps {
-                dir("retwisj"){
-                    sh 'mvn -Dmaven.test.failure.ignore clean package'
-                }
             }
         }
         stage('Google Authentification') {
@@ -31,20 +22,15 @@ pipeline {
                 '''
             }
         }
-        stage('Docker') {
+        stage('Deployment') {
             steps {
-                dir("retwisj"){
+                dir("deployment") {
                     sh '''
-                        docker build -t tweezen:1.0 .
-                        docker tag tweezen:1.0 eu.gcr.io/robust-zenith-161810/tweezen:1.0
-                        docker push eu.gcr.io/robust-zenith-161810/tweezen:1.0
+                        kubectl apply -f deployment_redis.yaml
+                        kubectl apply -f deployment_app.yaml
                     '''
                 }
             }
         }
-        // stage('Results') {
-        //     junit '**/target/surefire-reports/TEST-*.xml'
-        //     archiveArtifacts 'target/*.jar'
-        // }
     }
 }
