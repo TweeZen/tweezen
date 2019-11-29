@@ -15,11 +15,6 @@ pipeline {
                 '''
             }
         }
-        stage('Preparation') {
-            steps {
-                git 'https://github.com/TweeZen/tweezen'
-            }
-        }
         stage('Build') {
             steps {
                 dir("retwisj"){
