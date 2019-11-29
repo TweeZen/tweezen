@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+    tools {
+        maven 'Maven 3.6.2'
+        jdk 'jdk8'
+    }
+    stages {
+        stage ('Checking Tools') {
+            steps {
+                sh '''
+                echo 'user in use:' $USER
+                java -version
+                mvn --version
+                docker version
+                '''
+            }
+        }
+        stage('Preparation') {
+            steps {
+                git 'https://github.com/TweeZen/tweezen.git'
+            }
+        }
+        stage('Build') {
+            steps {
+               sh 'mvn -Dmaven.test.failure.ignore clean package'
+            }
+        }
+        stage('Google Authentification') {
+            steps {
+                sh '''
+                    gcloud auth activate-service-account 592775981948-compute@developer.gserviceaccount.com --key-file=/opt/bitnami/k8s-credentials.json
+                    gcloud auth configure-docker --quiet
+                    gcloud auth list
+                '''
+            }
+        }
+        stage('Docker') {
+            steps {
+                sh '''
+                    docker build -t retwisj:pipeline
+                    docker tag retwisj:pipeline eu.gcr.io/robust-zenith-161810/retwisj:pipeline
+                    docker push eu.gcr.io/robust-zenith-161810/retwisj:pipeline
+                '''
+            }
+        }
+        // stage('Results') {
+        //     junit '**/target/surefire-reports/TEST-*.xml'
+        //     archiveArtifacts 'target/*.jar'
+        // }
+    }
+}
