@@ -17,12 +17,17 @@ pipeline {
         }
         stage('Preparation') {
             steps {
-                git 'https://github.com/TweeZen/tweezen.git'
+                sh'''
+                    git clone https://github.com/TweeZen/tweezen.git
+                    pwd
+                    ls -al
+                '''
             }
         }
         stage('Build') {
             steps {
                 dir("${env.WORKSPACE}/retwisj"){
+                    sh 'ls -al'
                     sh 'mvn -Dmaven.test.failure.ignore clean package'
                 }
             }
