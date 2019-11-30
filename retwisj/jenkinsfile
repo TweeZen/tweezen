@@ -19,9 +19,9 @@ pipeline {
             steps {
                 dir("retwisj"){
                     script {
-                        pom = readMavenPom file: 'pom.xml'
+                        def pom = readMavenPom file: 'pom.xml'
                         env.POM_VERSION = pom.version
-                        env.BUILD_ID = ${env.POM_VERSION}-${env.BUILD_NUMBER}
+                        env.BUILD_ID = "${env.POM_VERSION}-${env.BUILD_NUMBER}"
                     }
 
                     sh 'echo $BUILD_ID'
