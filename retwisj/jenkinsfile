@@ -47,4 +47,15 @@ pipeline {
         //     archiveArtifacts 'target/*.jar'
         // }
     }
+    post {
+        always {
+            slackSend color: 'good', message: "🕓 [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Build Started"
+        }
+        success {
+            slackSend color: 'good', message: "🐋 [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Docker image successfully built and pushed on Google Cloud Registry !"
+        }
+        failure {
+            slackSend color: '#ff0000', message: "❌ [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Build Failed! (<${env.BUILD_URL}/console|view logs>)"
+        }
+    }
 }
