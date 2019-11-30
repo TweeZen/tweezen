@@ -28,7 +28,7 @@ pipeline {
                 dir("deployment") {
                     sh '''
                         kubectl apply -f deployment_redis.yaml
-                        #kubectl apply -f deployment_app.yaml
+                        kubectl apply -f deployment_app.yaml
                     '''
                 }
             }
