@@ -44,14 +44,6 @@ spec:
           periodSeconds: 2
           successThreshold: 1
           timeoutSeconds: 1
-        volumeMounts:
-          - name: redis-volume
-            mountPath: /data
-      volumes:
-      - name: redis-volume
-        gcePersistentDisk:
-          pdName: redis-disk
-          fsType: ext4
   strategy:
     rollingUpdate:
       maxSurge: 1
