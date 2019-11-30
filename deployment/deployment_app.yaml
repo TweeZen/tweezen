@@ -5,6 +5,7 @@ metadata:
     app: app
   name: app-service
   namespace: default
+  resourceVersion: "2055365"
 spec:
   clusterIP: 10.0.31.36
   externalTrafficPolicy: Cluster
@@ -25,6 +26,7 @@ metadata:
     app: app
   name: app
   namespace: default
+  resourceVersion: "2055803"
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
