@@ -33,3 +33,18 @@ spec:
       - image: eu.gcr.io/robust-zenith-161810/tweezen
         imagePullPolicy: Always
         name: tweezen-sha256
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /
+        port: 8080
+        scheme: HTTP
+      initialDelaySeconds: 5
+      periodSeconds: 2
+      successThreshold: 1
+      timeoutSeconds: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate

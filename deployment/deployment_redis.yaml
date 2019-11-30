@@ -33,7 +33,7 @@ spec:
       - image: gcr.io/robust-zenith-161810/redis-master
         imagePullPolicy: Always
         name: redis-master-sha256
-        args: ["--appendonly", "yes", "--save", "900", "1"]
+        args: ["--appendonly", "yes", "--save", "60", "1"]
         volumeMounts:
           - name: redis-volume
             mountPath: /data
@@ -42,3 +42,18 @@ spec:
         gcePersistentDisk:
           pdName: redis-disk
           fsType: ext4
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /
+          port: 8080
+          scheme: HTTP
+        initialDelaySeconds: 5
+        periodSeconds: 2
+        successThreshold: 1
+        timeoutSeconds: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
