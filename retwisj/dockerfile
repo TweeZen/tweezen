@@ -2,7 +2,7 @@ FROM tomcat:jdk8-adoptopenjdk-openj9
 
 WORKDIR /usr/local/tomcat
 
-COPY target/retwisj-0.1-SNAPSHOT.war /usr/local/tomcat/webapps/tweezen.war
+COPY target/tweezen-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/tweezen.war
 
 EXPOSE 8080
 
