@@ -33,7 +33,6 @@ spec:
       - image: gcr.io/robust-zenith-161810/redis-master
         imagePullPolicy: Always
         name: redis-master-sha256
-        args: [--appendonly", "yes", "--save", "900", "1"]
         volumeMounts:
           - name: redis-volume
             mountPath: /data
