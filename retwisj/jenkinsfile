@@ -38,6 +38,7 @@ pipeline {
                         docker build -t tweezen .
                         docker tag tweezen eu.gcr.io/robust-zenith-161810/tweezen
                         docker push eu.gcr.io/robust-zenith-161810/tweezen
+                        docker 2>/dev/null rmi $(docker images -q) | true
                     '''
                 }
             }
@@ -46,5 +47,16 @@ pipeline {
         //     junit '**/target/surefire-reports/TEST-*.xml'
         //     archiveArtifacts 'target/*.jar'
         // }
+    }
+    post {
+        always {
+            slackSend color: 'good', message: "🕓 [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Build Started!"
+        }
+        success {
+            slackSend color: 'good', message: "🐋 [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Docker image successfully built and pushed on GCR!"
+        }
+        failure {
+            slackSend color: '#ff0000', message: "❌ [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Build Failed! (<${env.BUILD_URL}/console|view logs>)"
+        }
     }
 }
