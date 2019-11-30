@@ -1,14 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: "2019-11-29T15:50:23Z"
   labels:
     app: redis
   name: redis-master
   namespace: default
-  resourceVersion: "2055728"
-  selfLink: /api/v1/namespaces/default/services/redis-master
-  uid: f4049b58-12bf-11ea-8238-42010a8400aa
 spec:
   clusterIP: 10.0.23.65
   externalTrafficPolicy: Cluster
@@ -25,17 +21,10 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "1"
-  creationTimestamp: "2019-11-29T15:49:56Z"
-  generation: 3
   labels:
     app: redis
   name: redis
   namespace: default
-  resourceVersion: "2055815"
-  selfLink: /apis/apps/v1/namespaces/default/deployments/redis
-  uid: e45c9bdd-12bf-11ea-8238-42010a8400aa
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
