@@ -36,4 +36,15 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            slackSend color: 'good', message: "🕓 [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Deployment Started!"
+        }
+        success {
+            slackSend color: 'good', message: "☸️ [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Image successfully deployed on Kubernetes!"
+        }
+        failure {
+            slackSend color: '#ff0000', message: "❌ [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Deployment Failed! (<${env.BUILD_URL}/console|view logs>)"
+        }
+    }
 }
