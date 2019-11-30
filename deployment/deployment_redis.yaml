@@ -4,11 +4,7 @@ metadata:
   labels:
     app: redis
   name: redis-master
-  namespace: default
-  resourceVersion: "2237813"
 spec:
-  clusterIP: 10.0.23.65
-  externalTrafficPolicy: Cluster
   ports:
   - port: 6379
     protocol: TCP
@@ -23,8 +19,6 @@ metadata:
   labels:
     app: redis
   name: redis
-  namespace: default
-  resourceVersion: "2250197"
 spec:
   replicas: 1
   selector:

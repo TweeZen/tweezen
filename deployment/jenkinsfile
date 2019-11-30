@@ -27,9 +27,9 @@ pipeline {
             steps {
                 dir("deployment") {
                     sh '''
-                        kubectl annotate svc redis-master kubectl.kubernetes.io/last-applied-configuration-
+                        kubectl delete service redis-master
                         kubectl apply -f deployment_redis.yaml
-                        kubectl annotate svc app-service kubectl.kubernetes.io/last-applied-configuration-
+                        kubectl delete service app-service 
                         kubectl apply -f deployment_app.yaml
                     '''
                 }
