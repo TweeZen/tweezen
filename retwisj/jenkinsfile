@@ -48,9 +48,9 @@ pipeline {
             steps {
                 dir("retwisj"){
                     sh '''
-                        docker build -t tweezen .
-                        docker tag tweezen eu.gcr.io/robust-zenith-161810/tweezen
-                        docker push eu.gcr.io/robust-zenith-161810/tweezen
+                        docker build -t tweezen:$BUILD_ID .
+                        docker tag tweezen:$BUILD_ID eu.gcr.io/robust-zenith-161810/tweezen:$BUILD_ID
+                        docker push eu.gcr.io/robust-zenith-161810/tweezen:$BUILD_ID
                     '''
                 }
             }
@@ -62,7 +62,7 @@ pipeline {
     }
     post {
         always {
-            slackSend color: 'good', message: "🕓 [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Build Started!"
+            slackSend color: 'good', message: "🕓 [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Build Started with id ${env.BUILD_ID}"
         }
         success {
             slackSend color: 'good', message: "🐋 [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Docker image successfully built and pushed on GCR!"
