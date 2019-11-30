@@ -5,7 +5,9 @@ metadata:
     app: app
   name: app-service
   namespace: default
+  resourceVersion: "2237940"
 spec:
+  clusterIP: 10.0.31.36
   externalTrafficPolicy: Cluster
   ports:
   - port: 8080
@@ -22,6 +24,7 @@ metadata:
     app: app
   name: app
   namespace: default
+  resourceVersion: "2237641"
 spec:
   replicas: 1
   selector:
