@@ -38,7 +38,6 @@ pipeline {
                         docker build -t tweezen .
                         docker tag tweezen eu.gcr.io/robust-zenith-161810/tweezen
                         docker push eu.gcr.io/robust-zenith-161810/tweezen
-                        docker 2>/dev/null rmi $(docker images -q) | true
                     '''
                 }
             }
