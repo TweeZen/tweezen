@@ -7,12 +7,15 @@ metadata:
   namespace: default
   resourceVersion: "2237813"
 spec:
+  clusterIP: 10.0.23.65
+  externalTrafficPolicy: Cluster
   ports:
   - port: 6379
     protocol: TCP
     targetPort: 6379
   selector:
     app: redis
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment

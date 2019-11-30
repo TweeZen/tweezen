@@ -7,12 +7,15 @@ metadata:
   namespace: default
   resourceVersion: "2237940"
 spec:
+  clusterIP: 10.0.31.36
+  externalTrafficPolicy: Cluster
   ports:
   - port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
     app: app
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
