@@ -34,3 +34,11 @@ spec:
         imagePullPolicy: Always
         name: redis-master-sha256
         args: ["--appendonly", "yes", "--save", "60", "1"]
+        volumeMounts:
+          - name: redis-volume
+            mountPath: /data
+      volumes:
+      - name: redis-volume
+        gcePersistentDisk:
+          pdName: redis-disk
+          fsType: ext4
