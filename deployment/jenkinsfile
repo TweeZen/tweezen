@@ -27,7 +27,9 @@ pipeline {
             steps {
                 dir("deployment") {
                     sh '''
+                        kubectl delete service redis-master
                         kubectl apply -f deployment_redis.yaml
+                        kubectl delete service app-service 
                         kubectl apply -f deployment_app.yaml
                     '''
                 }
