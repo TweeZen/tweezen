@@ -27,8 +27,8 @@ pipeline {
             steps {
                 dir("deployment") {
                     sh '''
-                        kubectl replace -f deployment_redis.yaml
-                        kubectl replace -f deployment_app.yaml
+                        kubectl apply -f deployment_redis.yaml
+                        kubectl apply -f deployment_app.yaml
                     '''
                 }
             }
