@@ -6,7 +6,6 @@ metadata:
   name: app-service
   namespace: default
 spec:
-  clusterIP: 10.0.31.36
   externalTrafficPolicy: Cluster
   ports:
   - port: 8080

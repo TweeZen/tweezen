@@ -6,7 +6,6 @@ metadata:
   name: redis-master
   namespace: default
 spec:
-  clusterIP: 10.0.23.65
   externalTrafficPolicy: Cluster
   ports:
   - port: 6379
