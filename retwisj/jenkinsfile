@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        GIT_EMAIL = 'no-reply@jenkins.com'
+        GIT_USER = 'Jenkins'
+    }
     tools {
         maven 'Maven 3.6.2'
         jdk 'jdk8'
@@ -22,9 +26,8 @@ pipeline {
                         def pom = readMavenPom file: 'pom.xml'
                         env.POM_VERSION = pom.version
                         env.BUILD_ID = "${env.POM_VERSION}-${env.BUILD_NUMBER}"
+                        echo "${env.BUILD_ID}"
                     }
-
-                    sh 'echo $BUILD_ID'
                 }
             }
         }
@@ -52,6 +55,32 @@ pipeline {
                         docker tag tweezen:$BUILD_ID eu.gcr.io/robust-zenith-161810/tweezen:$BUILD_ID
                         docker push eu.gcr.io/robust-zenith-161810/tweezen:$BUILD_ID
                     '''
+                }
+            }
+        }
+        stage('Deployment Modification') {
+            steps {
+                sshagent (credentials: ['git_ssh']) {
+                    sh'''
+                        git config --global user.email ${env.GIT_EMAIL}
+                        git config --global user.name ${env.GIT_USER}
+                        sed -i "s/#{BUILD_ID}#/${BUILD_ID}/" template/deployment_app.yaml
+                        git clone git@github.com:TweeZen/tweezen-deployment.git
+                        cp template/deployment_app.yaml tweezen-deployment/deployment_app.yaml
+                    '''
+                }
+            }
+        }
+        stage('Git') {
+            steps {
+                sshagent (credentials: ['git_ssh']) {
+                    dir("tweezen-deployment"){
+                        sh'''
+                            git add deployment_app.yaml
+                            git commit -m 'deployment version ${env.BUILD_ID}'
+                            git push origin HEAD:master
+                        '''
+                    }
                 }
             }
         }
