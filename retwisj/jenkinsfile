@@ -60,7 +60,7 @@ pipeline {
         }
         stage('Deployment Modification') {
             steps {
-                sshagent (credentials: ['git_ssh']) {
+                sshagent (credentials: ['git-ssh']) {
                     sh'''
                         git config --global user.email ${env.GIT_EMAIL}
                         git config --global user.name ${env.GIT_USER}
@@ -73,7 +73,7 @@ pipeline {
         }
         stage('Git') {
             steps {
-                sshagent (credentials: ['git_ssh']) {
+                sshagent (credentials: ['git-ssh']) {
                     dir("tweezen-deployment"){
                         sh'''
                             git add deployment_app.yaml
