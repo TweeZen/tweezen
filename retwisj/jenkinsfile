@@ -62,6 +62,7 @@ pipeline {
             steps {
                 dir("retwisj"){
                     sh '''
+                        sed -i "s/#{POM_VERSION}#/${POM_VERSION}/" dockerfile
                         docker build -t tweezen:$BUILD_ID .
                         docker tag tweezen:$BUILD_ID eu.gcr.io/robust-zenith-161810/tweezen:$BUILD_ID
                         docker push eu.gcr.io/robust-zenith-161810/tweezen:$BUILD_ID
