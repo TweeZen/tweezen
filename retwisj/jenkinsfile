@@ -76,7 +76,7 @@ pipeline {
                             cp ../template/deployment_app.yaml ./deployment_app.yaml
                             sed -i "s/#{BUILD_ID}#/${BUILD_ID}/" deployment_app.yaml
                             git add deployment_app.yaml
-                            git commit -m 'Deployment Version ${env.BUILD_ID}'
+                            git commit -m "Deployment Version $BUILD_ID"
                             git push origin HEAD:master
                         '''
                     }
