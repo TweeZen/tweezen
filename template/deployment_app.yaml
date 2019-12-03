@@ -30,7 +30,7 @@ spec:
         app: app
     spec:
       containers:
-      - image: eu.gcr.io/robust-zenith-161810/tweezen
+      - image: eu.gcr.io/robust-zenith-161810/tweezen:#{BUILD_ID}#
         imagePullPolicy: Always
         name: tweezen-sha256
         readinessProbe:
