@@ -34,10 +34,13 @@ pipeline {
         stage('Preparation') {
             steps {
                 sshagent (credentials: ['git-ssh']) {
-                    sh 'git config core.sshCommand "ssh -v -o StrictHostKeyChecking=no"'
-                    sh "git config --global user.email ${env.GIT_EMAIL}"
-                    sh "git config --global user.name ${env.GIT_USER}"
-                    sh "git clone git@github.com:TweeZen/tweezen-deployment.git"
+                    sh '''
+                        rm -rf tweezen-deployment/ 2> /dev/null
+                        git config core.sshCommand "ssh -v -o StrictHostKeyChecking=no"
+                        git config --global user.email ${env.GIT_EMAIL}
+                        git config --global user.name ${env.GIT_USER}
+                        git clone git@github.com:TweeZen/tweezen-deployment.git
+                    '''
                 }
             }
         }
