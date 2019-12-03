@@ -71,7 +71,7 @@ pipeline {
         stage('Deployment Modification') {
             steps {
                 dir("tweezen-deployment"){
-                    withCredentials([sshUserPrivateKey(credentialsId: 'git-ssh', keyFileVariable: 'KEY_FILE')]) {
+                    sshagent (credentials: ['git-ssh']) {
                         sh'''
                             cp ../template/deployment_app.yaml ./deployment_app.yaml
                             sed -i "s/#{BUILD_ID}#/${BUILD_ID}/" deployment_app.yaml
