@@ -34,13 +34,11 @@ pipeline {
         stage('Preparation') {
             steps {
                 sshagent (credentials: ['git-ssh']) {
-                    sh '''
-                        rm -rf tweezen-deployment/ 2> /dev/null
-                        git config core.sshCommand "ssh -v -o StrictHostKeyChecking=no"
-                        git config --global user.email ${env.GIT_EMAIL}
-                        git config --global user.name ${env.GIT_USER}
-                        git clone git@github.com:TweeZen/tweezen-deployment.git
-                    '''
+                    sh "rm -rf tweezen-deployment/ 2> /dev/null"
+                    sh 'git config core.sshCommand "ssh -v -o StrictHostKeyChecking=no"'
+                    sh "git config --global user.email ${env.GIT_EMAIL}"
+                    sh "git config --global user.name ${env.GIT_USER}"
+                    sh "git clone git@github.com:TweeZen/tweezen-deployment.git"
                 }
             }
         }
@@ -75,13 +73,11 @@ pipeline {
             steps {
                 dir("tweezen-deployment"){
                     sshagent (credentials: ['git-ssh']) {
-                        sh'''
-                            cp ../template/deployment_app.yaml ./deployment_app.yaml
-                            sed -i "s/#{BUILD_ID}#/${BUILD_ID}/" deployment_app.yaml
-                            git add deployment_app.yaml
-                            git commit -m "Deployment Version $BUILD_ID"
-                            git push origin HEAD:master
-                        '''
+                        sh 'cp ../template/deployment_app.yaml ./deployment_app.yaml'
+                        sh 'sed -i "s/#{BUILD_ID}#/${BUILD_ID}/" deployment_app.yaml'
+                        sh 'git add deployment_app.yaml'
+                        sh 'git commit -m "Deployment Version $BUILD_ID"'
+                        sh 'git push origin HEAD:master'
                     }
                 }
             }
