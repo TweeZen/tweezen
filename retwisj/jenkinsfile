@@ -33,6 +33,7 @@ pipeline {
         }
         stage('Preparation') {
             steps {
+                slackSend color: 'good', message: "🕓 [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Build Started with id ${env.BUILD_ID}"
                 sshagent (credentials: ['git-ssh']) {
                     sh "rm -rf tweezen-deployment/ 2> /dev/null"
                     sh 'git config core.sshCommand "ssh -v -o StrictHostKeyChecking=no"'
@@ -52,7 +53,7 @@ pipeline {
         stage('Google Authentification') {
             steps {
                 sh '''
-                    gcloud auth activate-service-account 592775981948-compute@developer.gserviceaccount.com --key-file=/opt/bitnami/k8s-credentials.json
+                    gcloud auth activate-service-account 1006758561507-compute@developer.gserviceaccount.com --key-file=/opt/bitnami/k8s-credentials.json
                     gcloud auth configure-docker --quiet
                     gcloud auth list
                 '''
@@ -64,8 +65,8 @@ pipeline {
                     sh '''
                         sed -i "s/#{POM_VERSION}#/${POM_VERSION}/" dockerfile
                         docker build -t tweezen:$BUILD_ID .
-                        docker tag tweezen:$BUILD_ID eu.gcr.io/robust-zenith-161810/tweezen:$BUILD_ID
-                        docker push eu.gcr.io/robust-zenith-161810/tweezen:$BUILD_ID
+                        docker tag tweezen:$BUILD_ID eu.gcr.io/unique-iterator-259210/tweezen:$BUILD_ID
+                        docker push eu.gcr.io/unique-iterator-259210/tweezen:$BUILD_ID
                     '''
                 }
             }
@@ -89,9 +90,6 @@ pipeline {
         // }
     }
     post {
-        always {
-            slackSend color: 'good', message: "🕓 [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Build Started with id ${env.BUILD_ID}"
-        }
         success {
             slackSend color: 'good', message: "🐋 [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Docker image successfully built and pushed on GCR!"
         }
