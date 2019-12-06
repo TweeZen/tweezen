@@ -46,7 +46,8 @@ pipeline {
         stage('Build') {
             steps {
                 dir("retwisj"){
-                    sh 'mvn -Dmaven.test.failure.ignore clean package'
+                    sh 'mvn clean package'
+                    junit '**/target/surefire-reports/TEST-*.xml'
                 }
             }
         }
