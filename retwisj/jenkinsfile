@@ -16,7 +16,6 @@ pipeline {
                     java -version
                     mvn --version
                     docker version
-                    echo $BRANCH_NAME
                 '''
             }
         }
