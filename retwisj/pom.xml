@@ -4,10 +4,15 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.tda</groupId>
-  <artifactId>retwisj</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <artifactId>tweezen</artifactId>
+  <version>1.2</version>
   <packaging>war</packaging>
 
+  <properties>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+  </properties>
+  
   <repositories>
     <repository>
       <id>springsource-libs</id>
@@ -20,16 +25,6 @@
       <url>https://repo.springsource.org/plugins-release</url>
     </repository>
   </repositories>
-
-  <distributionManagement>
-    <repository>
-      <uniqueVersion>true</uniqueVersion>
-      <id>generatedArtifact</id>
-      <name>DeployRepository</name>
-      <url>file:/D:/Documents/Cours/ITII/Projet_JAVA-TweeZen/tweezen/artifact/</url>
-      <layout>default</layout>
-    </repository>
-  </distributionManagement>
 
 
   <dependencies>
@@ -132,7 +127,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.8.1</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -154,9 +149,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <webXml>retwisj\src\main\webapp\WEB-INF\web.xml</webXml>
-        </configuration>
         <version>3.2.3</version>
       </plugin>
     </plugins>

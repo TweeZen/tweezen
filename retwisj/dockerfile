@@ -1,0 +1,11 @@
+FROM tomcat:jdk8-adoptopenjdk-openj9
+
+WORKDIR /usr/local/tomcat
+
+COPY tomcat-users.xml $CATALINA_HOME/conf/
+COPY context.xml $CATALINA_HOME/conf/
+COPY target/tweezen-#{POM_VERSION}#.war /usr/local/tomcat/webapps/tweezen.war
+
+EXPOSE 8080
+
+CMD ["catalina.sh", "run"]

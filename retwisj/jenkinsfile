@@ -1,0 +1,101 @@
+pipeline {
+    agent any
+    environment {
+        GIT_EMAIL = 'no-reply@jenkins.com'
+        GIT_USER = 'JenkinsVM'
+    }
+    tools {
+        maven 'Maven 3.6.2'
+        jdk 'jdk8'
+    }
+    stages {
+        stage ('Checking Tools') {
+            steps {
+                sh '''
+                    echo 'user in use:' $USER
+                    java -version
+                    mvn --version
+                    docker version
+                '''
+            }
+        }
+        stage('Generate Build ID') {
+            steps {
+                dir("retwisj"){
+                    script {
+                        def pom = readMavenPom file: 'pom.xml'
+                        env.POM_VERSION = pom.version
+                        env.BUILD_ID = "${env.POM_VERSION}-${env.BUILD_NUMBER}"
+                        echo "${env.BUILD_ID}"
+                    }
+                }
+            }
+        }
+        stage('Preparation') {
+            steps {
+                slackSend color: 'good', message: "🕓 [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Build Started with id ${env.BUILD_ID}"
+                sshagent (credentials: ['git-ssh']) {
+                    sh "rm -rf tweezen-deployment/ 2> /dev/null"
+                    sh 'git config core.sshCommand "ssh -v -o StrictHostKeyChecking=no"'
+                    sh "git config --global user.email ${env.GIT_EMAIL}"
+                    sh "git config --global user.name ${env.GIT_USER}"
+                    sh "git clone git@github.com:TweeZen/tweezen-deployment.git"
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                dir("retwisj"){
+                    sh 'mvn clean package'
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                }
+            }
+        }
+        stage('Google Authentification') {
+            steps {
+                sh '''
+                    gcloud auth activate-service-account 1006758561507-compute@developer.gserviceaccount.com --key-file=/opt/bitnami/k8s-credentials.json
+                    gcloud auth configure-docker --quiet
+                    gcloud auth list
+                '''
+            }
+        }
+        stage('Docker') {
+            steps {
+                dir("retwisj"){
+                    sh '''
+                        sed -i "s/#{POM_VERSION}#/${POM_VERSION}/" dockerfile
+                        docker build -t tweezen:$BUILD_ID .
+                        docker tag tweezen:$BUILD_ID eu.gcr.io/unique-iterator-259210/tweezen:$BUILD_ID
+                        docker push eu.gcr.io/unique-iterator-259210/tweezen:$BUILD_ID
+                    '''
+                }
+            }
+        }
+        stage('Deployment Modification') {
+            steps {
+                dir("tweezen-deployment"){
+                    sshagent (credentials: ['git-ssh']) {
+                        sh 'cp ../template/deployment.yaml ./deployment.yaml'
+                        sh 'sed -i "s/#{BUILD_ID}#/${BUILD_ID}/" deployment.yaml'
+                        sh 'git add deployment.yaml'
+                        sh 'git commit -m "Deployment Version $BUILD_ID"'
+                        sh 'git push origin HEAD:master'
+                    }
+                }
+            }
+        }
+        // stage('Results') {
+        //     junit '**/target/surefire-reports/TEST-*.xml'
+        //     archiveArtifacts 'target/*.jar'
+        // }
+    }
+    post {
+        success {
+            slackSend color: 'good', message: "🐋 [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Docker image successfully built and pushed on GCR!"
+        }
+        failure {
+            slackSend color: '#ff0000', message: "❌ [<${env.JOB_URL}|${env.JOB_NAME}>-<${env.BUILD_URL}|#${env.BUILD_NUMBER}>] Build Failed! (<${env.BUILD_URL}/console|view logs>)"
+        }
+    }
+}
