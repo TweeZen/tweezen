@@ -57,6 +57,7 @@ spec:
   selector:
     app: app
   type: LoadBalancer
+  loadBalancerIP: 34.76.66.56
 ---
 apiVersion: apps/v1
 kind: Deployment
