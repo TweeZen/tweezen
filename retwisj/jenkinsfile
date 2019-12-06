@@ -75,9 +75,9 @@ pipeline {
             steps {
                 dir("tweezen-deployment"){
                     sshagent (credentials: ['git-ssh']) {
-                        sh 'cp ../template/deployment_app.yaml ./deployment_app.yaml'
-                        sh 'sed -i "s/#{BUILD_ID}#/${BUILD_ID}/" deployment_app.yaml'
-                        sh 'git add deployment_app.yaml'
+                        sh 'cp ../template/deployment.yaml ./deployment.yaml'
+                        sh 'sed -i "s/#{BUILD_ID}#/${BUILD_ID}/" deployment.yaml'
+                        sh 'git add deployment.yaml'
                         sh 'git commit -m "Deployment Version $BUILD_ID"'
                         sh 'git push origin HEAD:master'
                     }
