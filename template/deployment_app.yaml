@@ -36,7 +36,7 @@ spec:
         readinessProbe:
           failureThreshold: 3
           httpGet:
-            path: /
+            path: /tweezen
             port: 8080
             scheme: HTTP
           initialDelaySeconds: 20
