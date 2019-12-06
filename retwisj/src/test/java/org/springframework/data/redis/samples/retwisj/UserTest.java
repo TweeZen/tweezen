@@ -57,4 +57,9 @@ public class UserTest {
         user.setPass("pass");
         assertNotEquals(user.getPass(),"");
     }
+
+    @Test
+    public void voluntaryFail() {
+        fail("Démonstration");
+    }
 }
