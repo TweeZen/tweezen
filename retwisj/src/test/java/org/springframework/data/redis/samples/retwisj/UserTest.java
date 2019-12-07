@@ -58,8 +58,8 @@ public class UserTest {
         assertNotEquals(user.getPass(),"");
     }
 
-    // @Test
-    // public void voluntaryFail() {
-    //     fail("Démonstration");
-    // }
+    @Test
+    public void voluntaryFail() {
+        fail("Démonstration");
+    }
 }
