@@ -51,6 +51,11 @@ pipeline {
                 }
             }
         }
+        stage('ClamAV') {
+            steps {
+                build job: 'tweezen-clamav', parameters: [[$class: 'StringParameterValue', name: 'CI_WORKSPACE', value: env.WORKSPACE]]
+            }
+        }
         stage('Google Authentification') {
             steps {
                 sh '''
