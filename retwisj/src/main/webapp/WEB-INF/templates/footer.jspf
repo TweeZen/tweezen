@@ -8,7 +8,7 @@
 	    </p>
 	    <p>&nbsp;</p>
 	    <p>
-	        Retwis-J is a simple Twitter clone written in Java using <a href="https://github.com/SpringSource/spring-data-redis">Spring Data</a> and <a href="https://redis.io">Redis</a>.
+	        TweeZen is a fork of Retwis-J, a simple Twitter clone written in Java using <a href="https://github.com/SpringSource/spring-data-redis">Spring Data</a> and <a href="https://redis.io">Redis</a>.
 	        The code is open-source and available on <a href="https://github.com/SpringSource/spring-data-keyvalue-examples">Github</a>.
 		</p>
         <p>Follow the team on Twitter: <a href="https://twitter.com/costinl">Costin</a>, <a href="https://twitter.com/markpollack">Mark</a>, <a href="https://twitter.com/jencompgeek">Jennifer</a></p>
